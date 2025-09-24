@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Express Capital Associates - Application Form</title>
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.0.0/dist/signature_pad.umd.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+  body { font-family: Arial, sans-serif; background-color: #f0f4f2; margin: 0; padding: 0; }
+
+  /* Header */
+  .header-banner { background-color: #146634; color: white; }
+
+  /* Field styling */
+  .field-box {
+    background-color: #cae0d3;
+    color: #146634;
+    font-weight: bold;
+    padding: 0.5rem;
+    border: 2px solid #146634;
+    border-radius: 6px;
+    width: 100%;
+    font-size: 1rem;
+    box-sizing: border-box; /* Add this to make sure padding and border are included in the width */
+  }
+  
+  /* Textarea specific styling for auto-resizing */
+  .field-box.auto-resize {
+    min-height: 50px;
+    resize: none;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  
+  .hidden { display: none; }
+
+  /* Signature Pad */
+  .signature-pad { border: 2px solid #146634; border-radius: 8px; }
+
+  /* Animated emoji */
+  .emoji-bounce {
+    display: inline-block;
+    animation: bounce 1s infinite alternate;
+    font-size: 1.5rem;
+  }
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-10px); }
+  }
+
+  /* Outer form border */
+  .form-container {
+    border: 4px solid #146634;
+    border-radius: 12px;
+    padding: 1.5rem;
+    background-color: white;
+    max-width: 900px;
+    margin: 2rem auto;
+  }
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #146634;
+    border-bottom: 2px solid #146634;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+  .full-width {
+    grid-column: 1 / -1;
+  }
+  .radio-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .radio-group input[type="radio"] {
+    accent-color: #146634;
+  }
+  select.field-box {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="%23146634" class="bi bi-caret-down-fill" viewBox="0 0 16 16"><path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 0.7em center;
+    background-size: 0.8em;
+  }
+  .print-button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 48%;
+  }
+  .submit-button {
+    background-color: #146634;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 48%;
+  }
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .required-note {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #e44258;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    background-color: #fff3f3;
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 2px solid #e44258;
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(228, 66, 88, 0.7);
+    }
+    70% {
+      transform: scale(1.05);
+      box-shadow: 0 0 0 10px rgba(228, 66, 88, 0);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(228, 66, 88, 0);
+    }
+  }
+
+  /* Custom styling for the SSN input to match the image */
+  input[name="ssn_owner"], input[name="ssn_partner"] {
+    -webkit-text-security: disc;
+  }
+  input[name="ssn_owner"]::-webkit-input-placeholder, input[name="ssn_partner"]::-webkit-input-placeholder {
+    -webkit-text-security: none;
+  }
+
+</style>
+</head>
+<body>
+
+<div class="form-container">
+  <div class="header-banner p-6 text-center rounded-lg mb-6">
+    <h1 class="text-3xl font-bold" style="color: #ffffcc;">EXPRESS CAPITAL NETWORK ASSOCIATES</h1>
+    <p class="text-lg mt-2">Soaring Above the Competition</p>
+  </div>
+
+  <form id="applicationForm" class="space-y-6" action="https://formspree.io/f/xnnbydaw" method="POST" enctype="multipart/form-data" target="_blank">
+
+    <div>
+      <h2 class="section-title">BUSINESS INFORMATION</h2>
+      <div class="form-grid">
+        <div>
+          <label for="legalCorporateName" class="font-bold text-[#146634]">Legal Corporate Name:</label>
+          <input type="text" id="legalCorporateName" name="legalCorporateName" class="field-box" required>
+        </div>
+        <div>
+          <label for="dba" class="font-bold text-[#146634]">DBA (Doing Business As):</label>
+          <input type="text" id="dba" name="dba" class="field-box">
+        </div>
+        <div class="full-width">
+          <label for="physicalAddress" class="font-bold text-[#146634]">Physical Address:</label>
+          <input type="text" id="physicalAddress" name="physicalAddress" class="field-box" required>
+        </div>
+        <div>
+          <label for="bizCity" class="font-bold text-[#146634]">City:</label>
+          <input type="text" id="bizCity" name="bizCity" class="field-box" required>
+        </div>
+        <div>
+          <label for="bizState" class="font-bold text-[#146634]">State:</label>
+          <select id="bizState" name="bizState" class="field-box" required>
+            <option value="">Select State</option>
+            <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+          </select>
+        </div>
+        <div>
+          <label for="bizZip" class="font-bold text-[#146634]">Zip:</label>
+          <input type="text" id="bizZip" name="bizZip" class="field-box" required>
+        </div>
+        <div>
+          <label for="telephoneNumber" class="font-bold text-[#146634]">Telephone Number:</label>
+          <input type="tel" id="telephoneNumber" name="telephoneNumber" class="field-box" required>
+        </div>
+        <div>
+          <label for="federalTaxId" class="font-bold text-[#146634]">Federal Tax ID:</label>
+          <input type="text" id="federalTaxId" name="federalTaxId" class="field-box" required>
+        </div>
+        <div>
+          <label for="dateBusinessStarted" class="font-bold text-[#146634]">Date Business Started:</label>
+          <input type="date" id="dateBusinessStarted" name="dateBusinessStarted" class="field-box" required>
+        </div>
+        <div class="full-width">
+          <label class="font-bold text-[#146634]">Do you have a website?</label>
+          <div class="radio-group flex gap-4 mt-2">
+            <label><input type="radio" name="hasWebsite" value="Yes" required>Yes</label>
+            <label><input type="radio" name="hasWebsite" value="No">No</label>
+          </div>
+        </div>
+        <div class="full-width hidden" id="websiteUrlField">
+          <label for="websiteUrl" class="font-bold text-[#146634]">Website URL:</label>
+          <input type="url" id="websiteUrl" name="websiteUrl" class="field-box" placeholder="https://www." required>
+        </div>
+        <div class="full-width">
+          <label for="emailAddress" class="font-bold text-[#146634]">Email Address:</label>
+          <input type="email" id="emailAddress" name="emailAddress" class="field-box" required>
+        </div>
+        <div class="full-width">
+          <label class="font-bold text-[#146634]">Type of Entity:</label>
+          <div class="radio-group flex gap-4 mt-2">
+            <label><input type="radio" name="entityType" value="Corporation" required>Corporation</label>
+            <label><input type="radio" name="entityType" value="LLC">LLC</label>
+            <label><input type="radio" name="entityType" value="Partnership">Partnership</label>
+            <label><input type="radio" name="entityType" value="Sole Proprietor">Sole Proprietor</label>
+          </div>
+        </div>
+        <div>
+          <label for="industryType" class="font-bold text-[#146634]">Industry Type:</label>
+          <select id="industryType" name="industryType" class="field-box" required>
+            <option value="">Select a business type</option>
+            <option value="Retail Store">Retail Store</option>
+            <option value="Restaurant / Food Service">Restaurant / Food Service</option>
+            <option value="E-commerce / Online Store">E-commerce / Online Store</option>
+            <option value="Construction / Trades (Plumbing, Electrical, HVAC)">Construction / Trades (Plumbing, Electrical, HVAC)</option>
+            <option value="Healthcare / Medical Practice">Healthcare / Medical Practice</option>
+            <option value="Professional Services (Consulting, Legal, Accounting)">Professional Services (Consulting, Legal, Accounting)</option>
+            <option value="Automotive (Repair, Dealership)">Automotive (Repair, Dealership)</option>
+            <option value="Hospitality / Lodging (Hotels, Motels, B&Bs)">Hospitality / Lodging (Hotels, Motels, B&Bs)</option>
+            <option value="Manufacturing / Production">Manufacturing / Production</option>
+            <option value="Transportation / Logistics">Transportation / Logistics</option>
+            <option value="Beauty Salon / Spa">Beauty Salon / Spa</option>
+            <option value="Fitness / Gym">Fitness / Gym</option>
+            <option value="Real Estate / Property Management">Real Estate / Property Management</option>
+            <option value="Technology / Software">Technology / Software</option>
+            <option value="Agriculture">Agriculture</option>
+            <option value="Non-Profit Organization">Non-Profit Organization</option>
+            <option value="Other (Please specify)">Other (Please specify)</option>
+          </select>
+        </div>
+        <div class="full-width">
+          <label for="additionalNotes" class="font-bold text-[#146634]">Additional Notes:</label>
+          <textarea id="additionalNotes" name="additionalNotes" class="field-box auto-resize" placeholder="Please add any additional information or comments here."></textarea>
+        </div>
+        <div>
+          <label for="monthlyGrossRevenue" class="font-bold text-[#146634]">Monthly Gross Revenue (Avg.):</label>
+          <input type="text" id="monthlyGrossRevenue" name="monthlyGrossRevenue" class="field-box" placeholder="$" required>
+        </div>
+        <div>
+          <label for="fundingAmountRequest" class="font-bold text-[#146634]">Funding Amount Request:</label>
+          <input type="text" id="fundingAmountRequest" name="fundingAmountRequest" class="field-box" placeholder="$" required>
+        </div>
+        <div>
+          <label for="fundingReason" class="font-bold text-[#146634]">Primary reason for seeking funding:</label>
+          <select id="fundingReason" name="fundingReason" class="field-box" required>
+            <option value="">Select a reason</option>
+            <option value="General Working Capital / Cash Flow">General Working Capital / Cash Flow</option>
+            <option value="Inventory Purchase">Inventory Purchase</option>
+            <option value="Equipment Purchase or Repair">Equipment Purchase or Repair</option>
+            <option value="Marketing & Advertising Campaigns">Marketing & Advertising Campaigns</option>
+            <option value="Business Expansion / Renovation">Business Expansion / Renovation</option>
+            <option value="Payroll Expenses">Payroll Expenses</option>
+            <option value="Debt Consolidation">Debt Consolidation</option>
+            <option value="Bridge Financing (e.g., waiting on invoices)">Bridge Financing (e.g., waiting on invoices)</option>
+            <option value="Emergency Funds / Unexpected Expenses">Emergency Funds / Unexpected Expenses</option>
+            <option value="Seasonal Business Needs">Seasonal Business Needs</option>
+            <option value="New Product/Service Development">New Product/Service Development</option>
+            <option value="Hiring New Staff">Hiring New Staff</option>
+            <option value="Real Estate Acquisition">Real Estate Acquisition</option>
+            <option value="Franchise Fee / Acquisition">Franchise Fee / Acquisition</option>
+            <option value="Other (Please specify)">Other (Please specify)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2 class="section-title">MERCHANT/OWNER INFORMATION</h2>
+      <div class="form-grid">
+        <div>
+          <label for="corporateOfficerName" class="font-bold text-[#146634]">Corporate Officer/Owner Name:</label>
+          <input type="text" id="corporateOfficerName" name="corporateOfficerName" class="field-box" required>
+        </div>
+        <div>
+          <label for="ownerTitle" class="font-bold text-[#146634]">Title:</label>
+          <input type="text" id="ownerTitle" name="ownerTitle" class="field-box" required>
+        </div>
+        <div>
+          <label for="ownerOwnershipPercentage" class="font-bold text-[#146634]">Ownership Percentage:</label>
+          <input type="number" id="ownerOwnershipPercentage" name="ownerOwnershipPercentage" class="field-box" required>
+        </div>
+        <div>
+          <label for="ownerHomeAddress" class="font-bold text-[#146634]">Home Address:</label>
+          <input type="text" id="ownerHomeAddress" name="ownerHomeAddress" class="field-box" required>
+        </div>
+        <div>
+          <label for="ownerCity" class="font-bold text-[#146634]">City:</label>
+          <input type="text" id="ownerCity" name="ownerCity" class="field-box" required>
+        </div>
+        <div>
+          <label for="ownerState" class="font-bold text-[#146634]">State:</label>
+          <select id="ownerState" name="ownerState" class="field-box" required>
+            <option value="">Select State</option>
+            <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+          </select>
+        </div>
+        <div>
+          <label for="ownerZip" class="font-bold text-[#146634]">Zip:</label>
+          <input type="text" id="ownerZip" name="ownerZip" class="field-box" required>
+        </div>
+        <div>
+          <label for="ownerSSN" class="font-bold text-[#146634]">Social Security Number (SSN):</label>
+          <input type="text" id="ownerSSN" name="ownerSSN" class="field-box" placeholder="XXX-XX-XXXX" pattern="\d{3}-\d{2}-\d{4}" required>
+        </div>
+        <div>
+          <label for="ownerDateOfBirth" class="font-bold text-[#146634]">Date of Birth:</label>
+          <input type="date" id="ownerDateOfBirth" name="ownerDateOfBirth" class="field-box" required>
+        </div>
+        <div>
+          <label for="ownerFicoScore" class="font-bold text-[#146634]">FICO Score:</label>
+          <select id="ownerFicoScore" name="ownerFicoScore" class="field-box" required>
+            <option value="">Select...</option>
+            <option value="300-500">300-500</option>
+            <option value="501-600">501-600</option>
+            <option value="601-700">601-700</option>
+            <option value="701-850">701-850</option>
+          </select>
+        </div>
+        <div>
+          <label for="ownerCellNumber" class="font-bold text-[#146634]">Cell Number:</label>
+          <input type="tel" id="ownerCellNumber" name="ownerCellNumber" class="field-box" required>
+        </div>
+      </div>
+    </div>
+
+    <div id="partnerSection">
+      <h2 class="section-title">PARTNER INFORMATION</h2>
+      <p class="text-sm italic text-center">Please provide information for all owners with 20% or more ownership.</p>
+      <div class="form-grid mt-4">
+        <div>
+          <label for="partnerName" class="font-bold text-[#146634]">Partner Name:</label>
+          <input type="text" id="partnerName" name="partnerName" class="field-box">
+        </div>
+        <div>
+          <label for="partnerTitle" class="font-bold text-[#146634]">Title:</label>
+          <input type="text" id="partnerTitle" name="partnerTitle" class="field-box">
+        </div>
+        <div>
+          <label for="partnerOwnershipPercentage" class="font-bold text-[#146634]">Ownership Percentage:</label>
+          <input type="number" id="partnerOwnershipPercentage" name="partnerOwnershipPercentage" class="field-box">
+        </div>
+        <div>
+          <label for="partnerHomeAddress" class="font-bold text-[#146634]">Home Address:</label>
+          <input type="text" id="partnerHomeAddress" name="partnerHomeAddress" class="field-box">
+        </div>
+        <div>
+          <label for="partnerCity" class="font-bold text-[#146634]">City:</label>
+          <input type="text" id="partnerCity" name="partnerCity" class="field-box">
+        </div>
+        <div>
+          <label for="partnerState" class="font-bold text-[#146634]">State:</label>
+          <select id="partnerState" name="partnerState" class="field-box">
+            <option value="">Select State</option>
+            <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option><option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option><option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option><option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option><option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option><option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option><option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option><option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option><option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option><option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option><option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option><option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option><option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option><option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option><option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option><option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option><option value="WI">Wisconsin</option><option value="WY">Wyoming</option>
+          </select>
+        </div>
+        <div>
+          <label for="partnerZip" class="font-bold text-[#146634]">Zip:</label>
+          <input type="text" id="partnerZip" name="partnerZip" class="field-box">
+        </div>
+        <div>
+          <label for="partnerSSN" class="font-bold text-[#146634]">Social Security Number (SSN):</label>
+          <input type="text" id="partnerSSN" name="partnerSSN" class="field-box" placeholder="XXX-XX-XXXX" pattern="\d{3}-\d{2}-\d{4}">
+        </div>
+        <div>
+          <label for="partnerDateOfBirth" class="font-bold text-[#146634]">Date of Birth:</label>
+          <input type="date" id="partnerDateOfBirth" name="partnerDateOfBirth" class="field-box">
+        </div>
+        <div>
+          <label for="partnerFicoScore" class="font-bold text-[#146634]">FICO Score:</label>
+          <select id="partnerFicoScore" name="partnerFicoScore" class="field-box">
+            <option value="">Select...</option>
+            <option value="300-500">300-500</option>
+            <option value="501-600">501-600</option>
+            <option value="601-700">601-700</option>
+            <option value="701-850">701-850</option>
+          </select>
+        </div>
+        <div>
+          <label for="partnerCellNumber" class="font-bold text-[#146634]">Cell Number:</label>
+          <input type="tel" id="partnerCellNumber" name="partnerCellNumber" class="field-box">
+        </div>
+      </div>
+    </div>
+
+    <div class="required-note">
+      <div class="mb-1 emoji-bounce">👇</div>
+      REQUIRED TO MOVE FORWARD AND SIGN DOCUMENT
+      <br>
+      click the check boxes below to upload your documents required to move forward and sign the documents
+    </div>
+
+    <div class="space-y-2">
+      <h2 class="section-title">DOCUMENT UPLOADS</h2>
+      <label class="flex items-center space-x-2">
+        <input type="checkbox" class="doc-checkbox">
+        Copy of Driver's License
+      </label>
+      <input type="file" name="driverLicense" class="hidden doc-upload" multiple>
+
+      <label class="flex items-center space-x-2">
+        <input type="checkbox" class="doc-checkbox">
+        Most Recent 4 Months Bank Statements
+      </label>
+      <input type="file" name="bankStatements" class="hidden doc-upload" multiple>
+
+      <label class="flex items-center space-x-2">
+        <input type="checkbox" class="doc-checkbox">
+        Voided Check
+      </label>
+      <input type="file" name="voidedCheck" class="hidden doc-upload" multiple>
+    </div>
+
+    <div class="hidden" id="disclaimerSection">
+      <div class="mb-1 emoji-bounce text-center">👇</div>
+      <label class="flex items-start space-x-2">
+        <input type="checkbox" id="disclaimerCheck" name="disclaimer" value="acknowledged">
+        <span>I acknowledge I have read and understood the terms and conditions of the application</span>
+      </label>
+      <p class="text-sm mt-2">
+        By signing above, each of the above listed business and business owner/officer (individually and collectively, "you") authorize Express Capital Network Associates and its agents, banks or financial institutions to obtain an investigative or consumer report from a credit bureau or a credit agency and to investigate the references given on any other statements or data obtained from applicant. You also authorize Express Capital Network Associates to transmit this application form, with any of the foregoing information obtained in connection with this application, to any or all of the Recipients for the foregoing purposes. You also consent to the release, by any creditor or financial institution, of any information relating to any of you, to Express Capital Network Associates and to each of the Recipients, on its own behalf. I am providing my business cell-phone and business e-mail address and hereby consent to the receipt of correspondence/messages regarding transactions with Express Capital Network Associates and/or its affiliates on either medium. I certify that all the information contained herein is complete, true and accurate. Express Capital Network Associate is not a lender or a bank. We do not provide loans or make credit decisions. Our service connects businesses like yours with a network of trusted third-party funding providers who offer Merchant Cash Advances (MCAs) and other commercial financing products. A Merchant Cash Advance (MCA) is a purchase of future receivables, not a loan. It is not subject to the same regulatory requirements as traditional loans and may have different terms and conditions. Please be aware that MCAs may involve higher costs compared to traditional financing options. All funding offers are subject to the individual provider's underwriting and approval processes. Express Capital Network Associate may receive a referral fee or commission if your business is funded through one of our partners. We strongly advise you to consult with a qualified financial advisor to determine if an MCA or any other financing product is suitable for your specific business needs. By submitting this application, you agree to be contacted by phone, SMS, or email regarding commercial financing products, in accordance with our Privacy Policy.
+      </p>
+    </div>
+
+    <div class="hidden" id="signatureSection">
+      <div class="mb-1 emoji-bounce text-center">🎯</div>
+      <p class="mb-2 font-semibold">Sign Below:</p>
+      <input type="hidden" name="signature" id="signatureInput">
+      <canvas id="signaturePad" class="signature-pad w-full h-40 mb-2"></canvas>
+      <button type="button" id="clearSignature" class="bg-red-600 text-white px-4 py-1 rounded">Clear</button>
+    </div>
+
+    <div class="button-container">
+      <button type="submit" class="submit-button">Submit Application</button>
+      <button type="button" onclick="window.print()" class="print-button">Print Application</button>
+    </div>
+  </form>
+</div>
+
+<div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-lg max-w-md text-center">
+    <p class="mb-4">Please check the box before signing to acknowledge you have read the terms and conditions.</p>
+    <button id="closeModal" class="bg-green-700 text-white px-4 py-2 rounded">OK</button>
+  </div>
+</div>
+
+<script>
+  const canvas = document.getElementById('signaturePad');
+  const signatureInput = document.getElementById('signatureInput');
+  const clearBtn = document.getElementById('clearSignature');
+  const disclaimerCheck = document.getElementById('disclaimerCheck');
+  const modal = document.getElementById('modal');
+  const closeModal = document.getElementById('closeModal');
+  const docCheckboxes = document.querySelectorAll('.doc-checkbox');
+  const docUploads = document.querySelectorAll('.doc-upload');
+  const disclaimerSection = document.getElementById('disclaimerSection');
+  const signatureSection = document.getElementById('signatureSection');
+  const hasWebsiteRadios = document.querySelectorAll('input[name="hasWebsite"]');
+  const websiteUrlField = document.getElementById('websiteUrlField');
+  const autoResizeTextarea = document.getElementById('additionalNotes');
+
+  let signaturePad;
+
+  function initSignaturePad() {
+    if (!signaturePad) {
+      signaturePad = new SignaturePad(canvas, { backgroundColor: 'rgba(255,255,255,0)' });
+      clearBtn.addEventListener('click', () => signaturePad.clear());
+      resizeCanvas();
+    }
+  }
+
+  function resizeCanvas() {
+    const ratio = Math.max(window.devicePixelRatio || 1, 1);
+    canvas.width = canvas.offsetWidth * ratio;
+    canvas.height = canvas.offsetHeight * ratio;
+    canvas.getContext('2d').scale(ratio, ratio);
+  }
+
+  window.addEventListener('resize', resizeCanvas);
+
+  // Auto-resize function for the textarea
+  if (autoResizeTextarea) {
+    autoResizeTextarea.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = this.scrollHeight + 'px';
+    });
+  }
+
+  // Show disclaimer and signature when all documents checked
+  docCheckboxes.forEach((checkbox, i) => {
+    checkbox.addEventListener('change', () => {
+      docUploads[i].classList.toggle('hidden', !checkbox.checked);
+      const allDocsChecked = [...docCheckboxes].every(cb => cb.checked);
+      if (allDocsChecked) {
+        disclaimerSection.classList.remove('hidden');
+        signatureSection.classList.remove('hidden');
+        initSignaturePad();
+      } else {
+        disclaimerSection.classList.add('hidden');
+        signatureSection.classList.add('hidden');
+      }
+    });
+  });
+
+  // Handle website URL field visibility
+  hasWebsiteRadios.forEach(radio => {
+    radio.addEventListener('change', (event) => {
+      if (event.target.value === 'Yes') {
+        websiteUrlField.classList.remove('hidden');
+      } else {
+        websiteUrlField.classList.add('hidden');
+      }
+    });
+  });
+
+  // Handle signature pad interaction
+  canvas.addEventListener('mousedown', (e) => {
+    if (!disclaimerCheck.checked) {
+      e.preventDefault();
+      modal.classList.remove('hidden');
+    }
+  });
+
+  disclaimerCheck.addEventListener('change', () => {
+    if (disclaimerCheck.checked) {
+      initSignaturePad();
+      // Scroll smoothly to the signature section
+      signatureSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  closeModal.addEventListener('click', () => modal.classList.add('hidden'));
+
+  // Form submission
+  document.getElementById('applicationForm').addEventListener('submit', (e) => {
+    if (!disclaimerCheck.checked) {
+      e.preventDefault();
+      // Using a simple modal instead of alert
+      modal.querySelector('p').textContent = 'Please acknowledge the disclaimer before submitting.';
+      modal.classList.remove('hidden');
+      return;
+    }
+    if (signaturePad && !signaturePad.isEmpty()) {
+      // No base64 conversion, simply check for signature presence
+    } else {
+      e.preventDefault();
+      // Using a simple modal instead of alert
+      modal.querySelector('p').textContent = 'Please sign before submitting.';
+      modal.classList.remove('hidden');
+    }
+  });
+
+  const ownerPercentageInput = document.getElementById('ownerOwnershipPercentage');
+  const partnerFields = document.querySelectorAll('#partnerSection input, #partnerSection select');
+
+  function updatePartnerRequired() {
+    const ownerPercentage = parseFloat(ownerPercentageInput.value);
+    if (!isNaN(ownerPercentage) && ownerPercentage < 100) {
+      partnerFields.forEach(field => {
+        field.required = true;
+      });
+    } else {
+      partnerFields.forEach(field => {
+        field.required = false;
+      });
+    }
+  }
+
+  ownerPercentageInput.addEventListener('input', updatePartnerRequired);
+  updatePartnerRequired(); // Initial check on page load
+
+  // --- Start of new code for formatting ---
+
+  // Function to format SSN
+  function formatSSN(input) {
+    const value = input.value.replace(/\D/g, ''); // Remove all non-digits
+    if (value.length > 9) {
+      value = value.substring(0, 9); // Truncate to 9 digits if needed
+    }
+    let formattedValue = '';
+    if (value.length > 0) {
+      formattedValue += value.substring(0, 3);
+    }
+    if (value.length >= 4) {
+      formattedValue += '-' + value.substring(3, 5);
+    }
+    if (value.length >= 6) {
+      formattedValue += '-' + value.substring(5, 9);
+    }
+    input.value = formattedValue;
+  }
+
+  // Function to format currency
+  function formatCurrency(input) {
+    const value = input.value.replace(/[^0-9.]/g, ''); // Remove non-numeric chars except a single decimal point
+    if (value === '') {
+      input.value = '';
+      return;
+    }
+    const number = parseFloat(value);
+    if (!isNaN(number)) {
+      input.value = '$' + number.toLocaleString('en-US');
+    }
+  }
+
+  // Event listeners for SSN fields
+  document.getElementById('ownerSSN').addEventListener('blur', function() {
+    formatSSN(this);
+  });
+  document.getElementById('partnerSSN').addEventListener('blur', function() {
+    formatSSN(this);
+  });
+
+  // Event listeners for currency fields
+  document.getElementById('monthlyGrossRevenue').addEventListener('blur', function() {
+    formatCurrency(this);
+  });
+  document.getElementById('fundingAmountRequest').addEventListener('blur', function() {
+    formatCurrency(this);
+  });
+
+  // Event listener to prevent non-numeric input for currency fields
+  document.getElementById('monthlyGrossRevenue').addEventListener('input', function(e) {
+      this.value = this.value.replace(/[^0-9.]/g, '');
+  });
+
+  document.getElementById('fundingAmountRequest').addEventListener('input', function(e) {
+      this.value = this.value.replace(/[^0-9.]/g, '');
+  });
+
+  // --- End of new code for formatting ---
+
+</script>
+
+</body>
+</html>
