@@ -119,32 +119,20 @@
     justify-content: space-between;
     gap: 1rem;
   }
-  .required-note {
-    font-size: 1.25rem;
-    font-weight: bold;
-    color: #e44258;
+  .warning-box {
+    background-color: #e44258;
+    color: white;
+    padding: 20px;
     text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-    background-color: #fff3f3;
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: 2px solid #e44258;
-    animation: pulse 1.5s infinite;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+    margin-bottom: 20px;
+    border-radius: 8px; 
   }
   @keyframes pulse {
-    0% {
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(228, 66, 88, 0.7);
-    }
-    70% {
-      transform: scale(1.05);
-      box-shadow: 0 0 0 10px rgba(228, 66, 88, 0);
-    }
-    100% {
-      transform: scale(1);
-      box-shadow: 0 0 0 0 rgba(228, 66, 88, 0);
-    }
+    0% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); }
   }
 
   /* Custom styling for the SSN input to match the image */
@@ -154,12 +142,52 @@
   input[name="ssn_owner"]::-webkit-input-placeholder, input[name="ssn_partner"]::-webkit-input-placeholder {
     -webkit-text-security: none;
   }
-  
-  /* Invalid field highlighting */
-  .invalid-field {
-    border: 2px solid #e44258 !important;
+
+  /* Document upload styling */
+  .document-upload-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    font-weight: bold;
+    color: #146634;
   }
 
+  .file-input-container {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .file-input-button {
+    background-color: #146634;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .file-input-button:hover {
+    background-color: #0d4d23;
+  }
+
+  .file-input-hidden {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+
+  .checkmark-icon {
+    font-size: 1.5rem;
+    color: green;
+    display: none;
+    margin-left: 10px;
+  }
 </style>
 </head>
 <body>
@@ -170,7 +198,7 @@
     <p class="text-lg mt-2">Soaring Above the Competition</p>
   </div>
 
-  <form id="applicationForm" class="space-y-6" action="https://formspree.io/f/xjkakgpo" method="POST" enctype="multipart/form-data" target="_blank">
+  <form id="applicationForm" class="space-y-6" action="https://formspree.io/f/xnnbydaw" method="POST" enctype="multipart/form-data" target="_blank">
 
     <div>
       <h2 class="section-title">BUSINESS INFORMATION</h2>
@@ -222,7 +250,7 @@
         </div>
         <div class="full-width hidden" id="websiteUrlField">
           <label for="websiteUrl" class="font-bold text-[#146634]">Website URL:</label>
-          <input type="url" id="websiteUrl" name="websiteUrl" class="field-box" placeholder="https://www." required>
+          <input type="url" id="websiteUrl" name="websiteUrl" class="field-box" placeholder="https://www.">
         </div>
         <div class="full-width">
           <label for="emailAddress" class="font-bold text-[#146634]">Email Address:</label>
@@ -340,7 +368,7 @@
         </div>
         <div>
           <label for="ownerFicoScore" class="font-bold text-[#146634]">FICO Score:</label>
-          <input type="text" id="ownerFicoScore" name="ownerFicoScore" class="field-box">
+          <input type="text" id="ownerFicoScore" name="ownerFicoScore" class="field-box" placeholder="Enter Score" required>
         </div>
         <div>
           <label for="ownerCellNumber" class="font-bold text-[#146634]">Cell Number:</label>
@@ -394,7 +422,7 @@
         </div>
         <div>
           <label for="partnerFicoScore" class="font-bold text-[#146634]">FICO Score:</label>
-          <input type="text" id="partnerFicoScore" name="partnerFicoScore" class="field-box">
+          <input type="text" id="partnerFicoScore" name="partnerFicoScore" class="field-box" placeholder="Enter Score">
         </div>
         <div>
           <label for="partnerCellNumber" class="font-bold text-[#146634]">Cell Number:</label>
@@ -403,36 +431,54 @@
       </div>
     </div>
 
-    <div class="required-note">
-      <div class="mb-1 emoji-bounce">📄</div>
-      REQUIRED TO MOVE FORWARD AND SIGN DOCUMENT
-      <br>
-      click the check boxes below to upload your documents required to move forward and sign the documents
+    <div class="warning-box">
+        <div class="mb-1 emoji-bounce">👇</div>
+        REQUIRED TO MOVE FORWARD AND SIGN DOCUMENT
+        <br>
+        click the check boxes below to upload your documents required to move forward and sign the documents
     </div>
 
     <div class="space-y-2">
       <h2 class="section-title">DOCUMENT UPLOADS</h2>
-      <label class="flex items-center space-x-2">
-        <input type="checkbox" class="doc-checkbox">
-        Copy of Driver's License
-      </label>
-      <input type="file" name="driverLicense" class="hidden doc-upload" multiple>
+      <!-- Driver's License Upload -->
+      <div class="document-upload-item">
+        <span>Copy of Driver's License</span>
+        <div class="file-input-container">
+            <input type="file" name="driverLicense" class="file-input-hidden doc-upload" multiple>
+            <div class="file-input-button">
+                Choose File
+            </div>
+        </div>
+        <span class="checkmark-icon" id="license-checkmark">✓</span>
+      </div>
 
-      <label class="flex items-center space-x-2">
-        <input type="checkbox" class="doc-checkbox">
-        Most Recent 4 Months Bank Statements
-      </label>
-      <input type="file" name="bankStatements" class="hidden doc-upload" multiple>
+      <!-- Bank Statements Upload -->
+      <div class="document-upload-item">
+        <span>Most Recent 4 Months Bank Statements</span>
+        <div class="file-input-container">
+            <input type="file" name="bankStatements" class="file-input-hidden doc-upload" multiple>
+            <div class="file-input-button">
+                Choose File
+            </div>
+        </div>
+        <span class="checkmark-icon" id="statements-checkmark">✓</span>
+      </div>
 
-      <label class="flex items-center space-x-2">
-        <input type="checkbox" class="doc-checkbox">
-        Voided Check
-      </label>
-      <input type="file" name="voidedCheck" class="hidden doc-upload" multiple>
+      <!-- Voided Check Upload -->
+      <div class="document-upload-item">
+        <span>Voided Check</span>
+        <div class="file-input-container">
+            <input type="file" name="voidedCheck" class="file-input-hidden doc-upload" multiple>
+            <div class="file-input-button">
+                Choose File
+            </div>
+        </div>
+        <span class="checkmark-icon" id="check-checkmark">✓</span>
+      </div>
     </div>
 
     <div class="hidden" id="disclaimerSection">
-      <div class="mb-1 emoji-bounce text-center">📄</div>
+      <div class="mb-1 emoji-bounce text-center">✍️</div>
       <label class="flex items-start space-x-2">
         <input type="checkbox" id="disclaimerCheck" name="disclaimer" value="acknowledged">
         <span>I acknowledge I have read and understood the terms and conditions of the application</span>
@@ -471,15 +517,14 @@
   const disclaimerCheck = document.getElementById('disclaimerCheck');
   const modal = document.getElementById('modal');
   const closeModal = document.getElementById('closeModal');
-  const docCheckboxes = document.querySelectorAll('.doc-checkbox');
   const docUploads = document.querySelectorAll('.doc-upload');
   const disclaimerSection = document.getElementById('disclaimerSection');
   const signatureSection = document.getElementById('signatureSection');
   const hasWebsiteRadios = document.querySelectorAll('input[name="hasWebsite"]');
   const websiteUrlField = document.getElementById('websiteUrlField');
+  const websiteUrlInput = document.getElementById('websiteUrl');
   const autoResizeTextarea = document.getElementById('additionalNotes');
-  const form = document.getElementById('applicationForm');
-  
+
   let signaturePad;
 
   function initSignaturePad() {
@@ -507,12 +552,23 @@
     });
   }
 
-  // Show disclaimer and signature when all documents checked
-  docCheckboxes.forEach((checkbox, i) => {
-    checkbox.addEventListener('change', () => {
-      docUploads[i].classList.toggle('hidden', !checkbox.checked);
-      const allDocsChecked = [...docCheckboxes].every(cb => cb.checked);
-      if (allDocsChecked) {
+  // Handle document upload and show disclaimer/signature
+  const checkmarks = {
+    driverLicense: document.getElementById('license-checkmark'),
+    bankStatements: document.getElementById('statements-checkmark'),
+    voidedCheck: document.getElementById('check-checkmark')
+  };
+  
+  docUploads.forEach(input => {
+    input.addEventListener('change', () => {
+      if (input.files.length > 0) {
+        checkmarks[input.name].style.display = 'block';
+      } else {
+        checkmarks[input.name].style.display = 'none';
+      }
+      
+      const allDocsUploaded = [...docUploads].every(doc => doc.files.length > 0);
+      if (allDocsUploaded) {
         disclaimerSection.classList.remove('hidden');
         signatureSection.classList.remove('hidden');
         initSignaturePad();
@@ -523,13 +579,17 @@
     });
   });
 
-  // Handle website URL field visibility
+  // Handle website URL field visibility and auto-fill
   hasWebsiteRadios.forEach(radio => {
     radio.addEventListener('change', (event) => {
       if (event.target.value === 'Yes') {
         websiteUrlField.classList.remove('hidden');
+        websiteUrlInput.value = 'https://www.';
+        websiteUrlInput.required = true;
       } else {
         websiteUrlField.classList.add('hidden');
+        websiteUrlInput.value = '';
+        websiteUrlInput.required = false;
       }
     });
   });
@@ -542,73 +602,31 @@
     }
   });
 
-  closeModal.addEventListener('click', () => modal.classList.add('hidden'));
-  
-  // Smooth scroll to signature pad on disclaimer check
   disclaimerCheck.addEventListener('change', () => {
     if (disclaimerCheck.checked) {
       initSignaturePad();
-      signatureSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Scroll smoothly to the signature section
+      signatureSection.scrollIntoView({ behavior: 'smooth' });
     }
   });
 
+  closeModal.addEventListener('click', () => modal.classList.add('hidden'));
+
   // Form submission
-  form.addEventListener('submit', (e) => {
-    // Remove invalid class from all fields before checking
-    document.querySelectorAll('.invalid-field').forEach(field => {
-        field.classList.remove('invalid-field');
-    });
-
-    // Check for missing required fields
-    const requiredFields = document.querySelectorAll('#applicationForm [required]');
-    let firstInvalidField = null;
-
-    for (const field of requiredFields) {
-        // Special handling for radio buttons
-        if (field.type === 'radio' && !document.querySelector(`input[name="${field.name}"]:checked`)) {
-            // Find the parent div of the radio group to highlight it
-            let radioGroup = field.closest('.radio-group');
-            if (radioGroup) {
-                if (!firstInvalidField) {
-                    firstInvalidField = radioGroup;
-                }
-                radioGroup.classList.add('invalid-field');
-            }
-        } else if (!field.value) {
-            if (!firstInvalidField) {
-                firstInvalidField = field;
-            }
-            field.classList.add('invalid-field');
-        }
-    }
-    
-    // Check signature and disclaimer before submitting
-    const signatureCheck = signaturePad && !signaturePad.isEmpty();
-    const disclaimerIsChecked = disclaimerCheck.checked;
-
-    if (firstInvalidField) {
-      e.preventDefault();
-      firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      if (firstInvalidField.tagName.toLowerCase() !== 'div') {
-          firstInvalidField.focus();
-      }
-    } else if (!disclaimerIsChecked) {
+  document.getElementById('applicationForm').addEventListener('submit', (e) => {
+    if (!disclaimerCheck.checked) {
       e.preventDefault();
       modal.querySelector('p').textContent = 'Please acknowledge the disclaimer before submitting.';
       modal.classList.remove('hidden');
-      disclaimerSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else if (!signatureCheck) {
+      return;
+    }
+    if (signaturePad && signaturePad.isEmpty()) {
       e.preventDefault();
       modal.querySelector('p').textContent = 'Please sign before submitting.';
       modal.classList.remove('hidden');
-      signatureSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    } else {
-      // All checks passed, set signature value and allow form to submit
-      signatureInput.value = signaturePad.toDataURL();
-      // The form will now submit normally because e.preventDefault() was not called at the top
     }
   });
-  
+
   const ownerPercentageInput = document.getElementById('ownerOwnershipPercentage');
   const partnerFields = document.querySelectorAll('#partnerSection input, #partnerSection select');
 
@@ -632,7 +650,7 @@
 
   // Function to format SSN
   function formatSSN(input) {
-    let value = input.value.replace(/\D/g, ''); // Remove all non-digits
+    const value = input.value.replace(/\D/g, ''); // Remove all non-digits
     if (value.length > 9) {
       value = value.substring(0, 9); // Truncate to 9 digits if needed
     }
@@ -688,6 +706,7 @@
   });
 
   // --- End of new code for formatting ---
+
 </script>
 
 </body>
